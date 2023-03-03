@@ -1,0 +1,14 @@
+package br.com.jards.teste.mvc.mudi.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import br.com.jards.teste.mvc.mudi.model.Pedido;
+import br.com.jards.teste.mvc.mudi.model.StatusPedido;
+
+
+public interface PedidoRepository extends JpaRepository<Pedido, Long> {
+
+    List<Pedido> findByStatus(StatusPedido status);
+
+}

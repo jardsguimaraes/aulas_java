@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{base :: head('Mudi - Home')}"></head>
+
+<body>
+    <div th:replace="~{base :: logo}"></div>
+    <div class="container">
+        <div th:replace="~{base :: jumbotron('Meus Pedidos')}"></div>
+        <nav class="navbar mb-3 navbar-expand bg-body-tertiary d-flex justify-content-between">
+            <div class="navbar-nav">
+                <a th:classappend="${status} == null ? 'active'" class="nav-link" href="/">Todos</a>
+                <a th:classappend="${status} == 'aguardando' ? 'active'" class="nav-link" href="/aguardando">Aguardando</a>
+                <a th:classappend="${status} == 'aprovado' ? 'active'" class="nav-link" href="/aprovado">Aprovado</a>
+                <a th:classappend="${status} == 'entregue' ? 'active'" class="nav-link" href="/entregue">Entregue</a>
+            </div>
+            <a href="/pedido/formulario"><button class="btn btn-outline-secondary">Novo</button></a>
+        </nav>
+        <div class="card mb-3" th:each="pedido : ${pedidos}">
+            <th:block th:switch="${pedido.status.name()}">
+                <div th:case="'AGUARDANDO'"  class="card-header alert alert-warning" th:text="${pedido.nomeProduto}">Nome do produto</div>
+                <div th:case="'APROVADO'"  class="card-header alert alert-success" th:text="${pedido.nomeProduto}">Nome do produto</div>
+                <div th:case="'ENTREGUE'"  class="card-header alert alert-dark" th:text="${pedido.nomeProduto}">Nome do produto</div>                
+            </th:block>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-sm-8 mb-3">
+                        <div class="row">
+                            <div class="col-md-5">Valor <span th:if="${pedido.valorNegociado} != null" th:text="${'R$: ' + #numbers.formatDecimal(pedido.valorNegociado,3,'POINT',2,'COMMA')}">200,99</span></div>
+                            <div class="col-md-7">Data de Entrega: <span
+                                    th:text="${#temporals.format(pedido.dataEntrega, 'dd/MM/yyyy')}">10/02/2023</span></div>
+                        </div>
+                        <div>Produto</div>
+                        <div><input class="form-control" th:value="${pedido.urlProduto}" value="url do produto" /></div>
+
+                        <div>descricao</div>
+                        <div>
+                            <textarea class="form-control" th:text="${pedido.descricao}">Descricao do Pedido</textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <div>
+                            <img class="img-thumbnail" th:src="${pedido.urlImagem}" src="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
